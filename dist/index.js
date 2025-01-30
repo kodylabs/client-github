@@ -178,6 +178,8 @@ ${errorMessages}`
 
 // src/index.ts
 var GitHubClientInterface = {
+  name: "github",
+  config: {},
   start: async (runtime) => {
     await validateGithubConfig(runtime);
     console.log("GitHubClientInterface start");
