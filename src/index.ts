@@ -2,6 +2,8 @@ import { GitHubClient } from "./github-client";
 import { validateGithubConfig } from "./environment";
 
 const GitHubClientInterface = {
+    name: 'github',
+    config: {},
     start: async (runtime: any) => {
         await validateGithubConfig(runtime);
         console.log("GitHubClientInterface start");
