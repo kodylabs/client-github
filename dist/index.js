@@ -1,4 +1,4 @@
-// src/github-client.ts
+// src/index.ts
 import { Octokit } from "@octokit/rest";
 import { glob } from "glob";
 import simpleGit from "simple-git";
@@ -11,6 +11,39 @@ import {
   knowledge,
   stringToUuid
 } from "@elizaos/core";
+
+// src/environment.ts
+import { z } from "zod";
+var githubEnvSchema = z.object({
+  GITHUB_OWNER: z.string().min(1, "GitHub owner is required"),
+  GITHUB_REPO: z.string().min(1, "GitHub repo is required"),
+  GITHUB_BRANCH: z.string().min(1, "GitHub branch is required"),
+  GITHUB_PATH: z.string().min(1, "GitHub path is required"),
+  GITHUB_API_TOKEN: z.string().min(1, "GitHub API token is required")
+});
+async function validateGithubConfig(runtime) {
+  try {
+    const config = {
+      GITHUB_OWNER: runtime.getSetting("GITHUB_OWNER"),
+      GITHUB_REPO: runtime.getSetting("GITHUB_REPO"),
+      GITHUB_BRANCH: runtime.getSetting("GITHUB_BRANCH"),
+      GITHUB_PATH: runtime.getSetting("GITHUB_PATH"),
+      GITHUB_API_TOKEN: runtime.getSetting("GITHUB_API_TOKEN")
+    };
+    return githubEnvSchema.parse(config);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const errorMessages = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join("\n");
+      throw new Error(
+        `GitHub configuration validation failed:
+${errorMessages}`
+      );
+    }
+    throw error;
+  }
+}
+
+// src/index.ts
 var GitHubClient = class {
   octokit;
   git;
@@ -143,57 +176,30 @@ var GitHubClient = class {
     await git.commit(message);
     await git.push();
   }
-};
-
-// src/environment.ts
-import { z } from "zod";
-var githubEnvSchema = z.object({
-  GITHUB_OWNER: z.string().min(1, "GitHub owner is required"),
-  GITHUB_REPO: z.string().min(1, "GitHub repo is required"),
-  GITHUB_BRANCH: z.string().min(1, "GitHub branch is required"),
-  GITHUB_PATH: z.string().min(1, "GitHub path is required"),
-  GITHUB_API_TOKEN: z.string().min(1, "GitHub API token is required")
-});
-async function validateGithubConfig(runtime) {
-  try {
-    const config = {
-      GITHUB_OWNER: runtime.getSetting("GITHUB_OWNER"),
-      GITHUB_REPO: runtime.getSetting("GITHUB_REPO"),
-      GITHUB_BRANCH: runtime.getSetting("GITHUB_BRANCH"),
-      GITHUB_PATH: runtime.getSetting("GITHUB_PATH"),
-      GITHUB_API_TOKEN: runtime.getSetting("GITHUB_API_TOKEN")
-    };
-    return githubEnvSchema.parse(config);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errorMessages = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join("\n");
-      throw new Error(
-        `GitHub configuration validation failed:
-${errorMessages}`
-      );
-    }
-    throw error;
+  async stop() {
+    elizaLogger.warn("GitHub client does not support stopping yet");
   }
-}
-
-// src/index.ts
+};
 var GitHubClientInterface = {
   name: "github",
-  config: {},
   start: async (runtime) => {
     await validateGithubConfig(runtime);
-    console.log("GitHubClientInterface start");
+    elizaLogger.log("GitHubClientInterface start");
     const client = new GitHubClient(runtime);
     await client.initialize();
     await client.createMemoriesFromFiles();
     return client;
-  },
-  stop: async (_runtime) => {
-    console.log("GitHubClientInterface stop");
   }
 };
-var index_default = GitHubClientInterface;
+var githubPlugin = {
+  name: "github",
+  description: "GitHub client",
+  clients: [GitHubClientInterface]
+};
+var index_default = githubPlugin;
 export {
+  GitHubClient,
+  GitHubClientInterface,
   index_default as default
 };
 //# sourceMappingURL=index.js.map
