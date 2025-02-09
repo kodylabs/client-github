@@ -1,4 +1,4 @@
-// src/index.ts
+// src/client.ts
 import { Octokit } from "@octokit/rest";
 import { glob } from "glob";
 import simpleGit from "simple-git";
@@ -43,7 +43,7 @@ ${errorMessages}`
   }
 }
 
-// src/index.ts
+// src/client.ts
 var GitHubClient = class {
   octokit;
   git;
@@ -191,6 +191,8 @@ var GitHubClientInterface = {
     return client;
   }
 };
+
+// src/index.ts
 var githubPlugin = {
   name: "github",
   description: "GitHub client",
@@ -198,8 +200,6 @@ var githubPlugin = {
 };
 var index_default = githubPlugin;
 export {
-  GitHubClient,
-  GitHubClientInterface,
   index_default as default
 };
 //# sourceMappingURL=index.js.map
