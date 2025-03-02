@@ -84,7 +84,7 @@ var GitHubClient = class {
     }
   }
   async cloneRepository() {
-    const repositoryUrl = `https://github.com/${this.config.owner}/${this.config.repo}.git`;
+    const repositoryUrl = `https://${this.config.token}@github.com/${this.config.owner}/${this.config.repo}.git`;
     const maxRetries = 3;
     let retries = 0;
     while (retries < maxRetries) {
