@@ -1,0 +1,110 @@
+# OS - MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# OS - Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+[Dd]esktop.ini
+
+# OS - Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# IDE - Cursor
+.cursor/*
+.cursor-server/*
+
+# Docker
+docker-compose.override.yml
+Dockerfile.local
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+.terraformrc
+terraform.rc
+.terraform.lock.hcl
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# TypeScript
+*.tsbuildinfo
+dist/
+build/
+*/.ts
+!index.ts
+!character.ts
+
+# JavaScript
+coverage/
+.nyc_output/
+.jest/
+
+# Git
+*.orig
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+.env
+
+# Local db
+**/data/db.sqlite
+
+# InteliJ
+.idea/*
+
+# Eliza
+**/content/*
+**/content-cache/*
+**/.env
+
+# LLAMA Model
+*.gguf
+
+# Large binary files
+*.gz
+*.zip
+*.tar
+*.7z
